@@ -1,0 +1,66 @@
+{% extends "app/layout.html" %}
+
+{% block content %}
+<div class="jumbotron">
+    <h1>Report a Crime</h1>
+    <p class="lead">Help us keep your community safe by reporting crimes securely and easily.</p>
+</div>
+
+<div class="container">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="region">Region</label>
+            <select id="region" name="region" class="form-control" required>
+                <option value="">Select a region</option>
+                <option value="Kachin">Kachin</option>
+                <option value="Kayah">Kayah</option>
+                <option value="Kayin">Kayin</option>
+                <option value="Chin">Chin</option>
+                <option value="Mon">Mon</option>
+                <option value="Rakhine">Rakhine</option>
+                <option value="Shan">Shan</option>
+                <option value="Yangon">Yangon</option>
+                <option value="Mandalay">Mandalay</option>
+                <option value="Bago">Bago</option>
+                <option value="Sagaing">Sagaing</option>
+                <option value="Magway">Magway</option>
+                <option value="Ayeyarwady">Ayeyarwady</option>
+                <option value="Tanintharyi">Tanintharyi</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="crime_type">Crime Type</label>
+            <select id="crime_type" name="crime_type" class="form-control" required>
+                <option value="">Select a crime type</option>
+                <option value="Child Abuse">Child Abuse</option>
+                <option value="Domestic Violence">Domestic Violence</option>
+                <option value="Elder Abuse">Elder Abuse</option>
+                <option value="Theft">Theft</option>
+                <option value="Robbery">Robbery</option>
+                <option value="Assault">Assault</option>
+                <option value="Fraud">Fraud</option>
+                <option value="Cybercrime">Cybercrime</option>
+                <option value="Drug-related">Drug-related</option>
+                <option value="Other">Other</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea id="description" name="description" class="form-control" rows="4" maxlength="900" required></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="file_content">Upload Evidence</label>
+            <input type="file" id="file_content" name="file_content" class="form-control" accept="image/*,video/*" required>
+            <small class="form-text text-muted">Maximum combined file size: 100MB.</small>
+        </div>
+
+        <input type="hidden" name="report_date" value="{{ current_date }}">
+
+        <button type="submit" class="btn btn-primary">Submit Report</button>
+    </form>
+</div>
+{% endblock %}

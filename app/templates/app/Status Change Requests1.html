@@ -1,0 +1,161 @@
+{% extends "app/user_dashboard2.html" %}
+
+{% block content %}
+<div class="container">
+    <h1>Status Change Requests</h1>
+
+    <!-- Rank Change Requests Table -->
+    <h2>Rank Change Requests</h2>
+    <table id="rankChangeTable" class="display">
+        <thead>
+            <tr>
+                <th>User ID</th>
+                <th>Name</th>
+                <th>Current Rank</th>
+                <th>Requested Rank</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for request in rank_requests %}
+            <tr>
+                <td>{{ request.userid }}</td>
+                <td>{{ request.name }}</td>
+                <td>{{ request.currentrank }}</td>
+                <td>{{ request.updaterank }}</td>
+                <td>
+                    {% if request.confirmation == "pending" %}
+                    <button class="btn btn-success confirm-rank" data-id="{{ request.id }}">Confirm</button>
+                    <button class="btn btn-danger deny-rank" data-id="{{ request.id }}">Deny</button>
+                    {% else %}
+                    <button class="btn btn-secondary" disabled>{{ request.confirmation|title }}</button>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Region Change Requests Table -->
+    <h2>Region Change Requests</h2>
+
+    <!-- From Your Station -->
+    <h3>From Your Station</h3>
+    <table id="regionFromTable" class="display">
+        <thead>
+            <tr>
+                <th>User ID</th>
+                <th>Name</th>
+                <th>Current Location</th>
+                <th>Requested Location</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for request in region_from_requests %}
+            <tr>
+                <td>{{ request.userid }}</td>
+                <td>{{ request.name }}</td>
+                <td>{{ request.currentlocation }}</td>
+                <td>{{ request.updatelocation }}</td>
+                <td>
+                    {% if request.confirmation1 == "pending" %}
+                    <button class="btn btn-success confirm-region" data-id="{{ request.id }}" data-confirmation="1">Confirm</button>
+                    <button class="btn btn-danger deny-region" data-id="{{ request.id }}" data-confirmation="1">Deny</button>
+                    {% else %}
+                    <button class="btn btn-secondary" disabled>{{ request.confirmation1|title }}</button>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- To Your Station -->
+    <h3>To Your Station</h3>
+    <table id="regionToTable" class="display">
+        <thead>
+            <tr>
+                <th>User ID</th>
+                <th>Name</th>
+                <th>Current Location</th>
+                <th>Requested Location</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for request in region_to_requests %}
+            <tr>
+                <td>{{ request.userid }}</td>
+                <td>{{ request.name }}</td>
+                <td>{{ request.currentlocation }}</td>
+                <td>{{ request.updatelocation }}</td>
+                <td>
+                    {% if request.confirmation2 == "pending" %}
+                    <button class="btn btn-success confirm-region" data-id="{{ request.id }}" data-confirmation="2">Confirm</button>
+                    <button class="btn btn-danger deny-region" data-id="{{ request.id }}" data-confirmation="2">Deny</button>
+                    {% else %}
+                    <button class="btn btn-secondary" disabled>{{ request.confirmation2|title }}</button>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script>
+    // Initialize DataTables
+    $(document).ready(function() {
+        $('#rankChangeTable').DataTable();
+        $('#regionFromTable').DataTable();
+        $('#regionToTable').DataTable();
+    });
+
+    // Confirm/Deny Rank Change
+    $(document).on('click', '.confirm-rank, .deny-rank', function() {
+        const requestId = $(this).data('id');
+        const action = $(this).hasClass('confirm-rank') ? 'confirm' : 'deny';
+        $.ajax({
+            url: '{% url "rank_change_action" %}',
+            method: 'POST',
+            data: {
+                'id': requestId,
+                'action': action,
+                'csrfmiddlewaretoken': '{{ csrf_token }}'
+            },
+            success: function(response) {
+                alert(response.message);
+                location.reload();
+            },
+            error: function(xhr) {
+                alert('An error occurred while processing the request.');
+            }
+        });
+    });
+
+    // Confirm/Deny Region Change
+    $(document).on('click', '.confirm-region, .deny-region', function() {
+        const requestId = $(this).data('id');
+        const confirmation = $(this).data('confirmation');
+        const action = $(this).hasClass('confirm-region') ? 'confirm' : 'deny';
+        $.ajax({
+            url: '{% url "region_change_action" %}',
+            method: 'POST',
+            data: {
+                'id': requestId,
+                'action': action,
+                'confirmation': confirmation,
+                'csrfmiddlewaretoken': '{{ csrf_token }}'
+            },
+            success: function(response) {
+                alert(response.message);
+                location.reload();
+            },
+            error: function(xhr) {
+                alert('An error occurred while processing the request.');
+            }
+        });
+    });
+</script>
+{% endblock %}

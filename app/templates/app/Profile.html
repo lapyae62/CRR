@@ -1,0 +1,20 @@
+{% extends "app/user_dashboard1.html" %}
+
+{% block content %}
+<div class="container">
+    <h1>User Profile</h1>
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5 class="card-title">Profile Information</h5>
+            <p class="card-text"><strong>Username:</strong> {{ user.username }}</p>
+            <p class="card-text"><strong>Email:</strong> {{ user.email }}</p>
+            <p class="card-text"><strong>Rank:</strong> {{ user.rank }}</p>
+            <p class="card-text"><strong>Region:</strong> {{ user.state }}</p>
+            <p class="card-text"><strong>City:</strong> {{ user.city }}</p>
+            <p class="card-text"><strong>Station:</strong> {{ user.station }}</p>
+        </div>
+    </div>
+
+    <a href="{% url 'update_status_request' %}" class="btn btn-primary">Update My Status</a>
+</div>
+{% endblock %}

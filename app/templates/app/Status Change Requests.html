@@ -1,0 +1,100 @@
+{% extends "app/admin_layout.html" %}
+
+{% block content %}
+<div class="container">
+    <h1>Manage User Requests</h1>
+
+    <table id="rankRequests" class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Current Rank</th>
+                <th>Requested Rank</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for request in rank_requests %}
+            {% if request.confirmation == "Approved" %}
+            <tr>
+                <td>{{ request.id }}</td>
+                <td>{{ request.name }}</td>
+                <td>{{ request.currentrank }}</td>
+                <td>{{ request.updaterank }}</td>
+                <td><span class="text-success">Approved</span></td>
+                <td>
+                    <form method="post" action="{% url 'process_rank_request' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="request_id" value="{{ request.id }}">
+                        <button type="submit" class="btn btn-success">Proceed Update</button>
+                    </form>
+                </td>
+            </tr>
+            {% elif request.confirmation == "Pending" %}
+            <tr>
+                <td>{{ request.id }}</td>
+                <td>{{ request.name }}</td>
+                <td>{{ request.currentrank }}</td>
+                <td>{{ request.updaterank }}</td>
+                <td><span class="text-warning">Pending</span></td>
+                <td><button class="btn btn-secondary" disabled>Awaiting Approval</button></td>
+            </tr>
+            {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <table id="regionRequests" class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Current Location</th>
+                <th>Requested Location</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for request in region_requests %}
+            {% if request.confirmation1 == "Approved" and request.confirmation2 == "Approved" %}
+            <tr>
+                <td>{{ request.id }}</td>
+                <td>{{ request.name }}</td>
+                <td>{{ request.currentlocation }}</td>
+                <td>{{ request.updatelocation }}</td>
+                <td><span class="text-success">Approved</span></td>
+                <td>
+                    <form method="post" action="{% url 'process_region_request' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="request_id" value="{{ request.id }}">
+                        <button type="submit" class="btn btn-success">Proceed Update</button>
+                    </form>
+                </td>
+            </tr>
+            {% elif request.confirmation1 == "Pending" or request.confirmation2 == "Pending" %}
+            <tr>
+                <td>{{ request.id }}</td>
+                <td>{{ request.name }}</td>
+                <td>{{ request.currentlocation }}</td>
+                <td>{{ request.updatelocation }}</td>
+                <td><span class="text-warning">Pending</span></td>
+                <td><button class="btn btn-secondary" disabled>Awaiting Approval</button></td>
+            </tr>
+            {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Add JavaScript for DataTables -->
+<script>
+    $(document).ready(function () {
+        $('#rankRequests').DataTable();
+        $('#regionRequests').DataTable();
+    });
+</script>
+{% endblock %}
+

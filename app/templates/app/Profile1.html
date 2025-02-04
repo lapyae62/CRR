@@ -1,0 +1,37 @@
+{% extends "user_dashboard2.html" %}
+
+{% block content %}
+<div class="container">
+    <h1>My Profile</h1>
+    <div class="profile-info">
+        <table class="table table-striped">
+            <tbody>
+                <tr>
+                    <th>Username</th>
+                    <td>{{ user.username }}</td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <td>{{ user.email }}</td>
+                </tr>
+                <tr>
+                    <th>Rank</th>
+                    <td>{{ user.rank }}</td>
+                </tr>
+                <tr>
+                    <th>State</th>
+                    <td>{{ user.state }}</td>
+                </tr>
+                <tr>
+                    <th>City</th>
+                    <td>{{ user.city }}</td>
+                </tr>
+                <tr>
+                    <th>Station</th>
+                    <td>{{ user.station }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

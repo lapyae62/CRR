@@ -1,0 +1,139 @@
+{% extends "app/user_dashboard1.html" %}
+
+{% block content %}
+<div class="container">
+    <h1>Update Request</h1>
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label for="update_type">Choose Update Type</label>
+            <select id="update_type" name="update_type" class="form-control" required>
+                <option value="">-- Select --</option>
+                <option value="rank">Rank</option>
+                <option value="region">Region</option>
+            </select>
+        </div>
+
+        <!-- Rank Update Section -->
+        <div id="rank_update_section" style="display: none;">
+            <h3>Rank Update</h3>
+            <div class="form-group">
+                <label for="current_rank">Current Rank</label>
+                <input type="text" id="current_rank" name="current_rank" class="form-control" value="{{ user.rank }}" readonly>
+            </div>
+
+            <div class="form-group">
+                <label for="update_rank">Update Rank</label>
+                <select id="update_rank" name="update_rank" class="form-control">
+                    <option value="">-- Select --</option>
+                    <option value="Constable">Constable</option>
+                    <option value="Sub-Inspector">Sub-Inspector</option>
+                    <option value="Inspector">Inspector</option>
+                    <option value="Superintendent">Superintendent</option>
+                    <option value="Director General">Director General</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Region Update Section -->
+        <div id="region_update_section" style="display: none;">
+            <h3>Region Update</h3>
+            <div class="form-group">
+                <label for="current_state">Current State</label>
+                <input type="text" id="current_state" name="current_state" class="form-control" value="{{ user.state }}" readonly>
+            </div>
+
+            <div class="form-group">
+                <label for="update_state">Update State</label>
+                <select id="update_state" name="update_state" class="form-control">
+                    <option value="">-- Select --</option>
+                    <option value="KaChin">KaChin</option>
+                    <option value="KaYah">KaYah</option>
+                    <option value="KaYin">KaYin</option>
+                    <option value="Chin">Chin</option>
+                    <option value="Mon">Mon</option>
+                    <option value="YaKhine">YaKhine</option>
+                    <option value="Shan">Shan</option>
+                    <option value="Yangon">Yangon</option>
+                    <option value="Mandalay">Mandalay</option>
+                    <option value="Bago">Bago</option>
+                    <option value="Sagaing">Sagaing</option>
+                    <option value="Magwe">Magwe</option>
+                    <option value="Ayeyarwady">Ayeyarwady</option>
+                    <option value="Taninthayi">Taninthayi</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="update_city">Update City</label>
+                <select id="update_city" name="update_city" class="form-control">
+                    <option value="">-- Select City --</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="update_station">Update Station</label>
+                <select id="update_station" name="update_station" class="form-control">
+                    <option value="">-- Select Station --</option>
+                    <option value="Station 1">Station 1</option>
+                    <option value="Station 2">Station 2</option>
+                    <option value="Station 3">Station 3</option>
+                </select>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit Request</button>
+    </form>
+</div>
+
+<script>
+    const updateType = document.getElementById('update_type');
+    const rankSection = document.getElementById('rank_update_section');
+    const regionSection = document.getElementById('region_update_section');
+
+    updateType.addEventListener('change', function() {
+        if (this.value === 'rank') {
+            rankSection.style.display = 'block';
+            regionSection.style.display = 'none';
+        } else if (this.value === 'region') {
+            rankSection.style.display = 'none';
+            regionSection.style.display = 'block';
+        } else {
+            rankSection.style.display = 'none';
+            regionSection.style.display = 'none';
+        }
+    });
+
+    const stateSelect = document.getElementById('update_state');
+    const citySelect = document.getElementById('update_city');
+
+    const citiesByState = {
+        "KaChin": ["Myitkyina", "Bhamo", "Putao", "Shwegu", "Mogaung"],
+        "KaYah": ["Loikaw", "Demoso", "Shadaw", "Hpasawng", "Mese"],
+        "KaYin": ["Hpa-An", "Hlaingbwe", "Thandaung", "Kawkareik", "Myawaddy"],
+        "Chin": ["Hakha", "Falam", "Tonzang", "Matupi", "Paletwa"],
+        "Mon": ["Mawlamyine", "Thanbyuzayat", "Mudon", "Ye", "Chaungzon"],
+        "YaKhine": ["Sittwe", "Thandwe", "Mrauk-U", "Kyaukphyu", "Gwa"],
+        "Shan": ["Taunggyi", "Lashio", "Muse", "Kengtung", "Nyaungshwe"],
+        "Yangon": ["Yangon", "Thanlyin", "Insein", "Hlegu", "Hmawbi"],
+        "Mandalay": ["Mandalay", "Pyin Oo Lwin", "Kyaukse", "Meiktila", "Myingyan"],
+        "Bago": ["Bago", "Taungoo", "Pyay", "Shwegyin", "Nyaunglebin"],
+        "Sagaing": ["Sagaing", "Monywa", "Shwebo", "Kale", "Tamu"],
+        "Magwe": ["Magwe", "Pakokku", "Minbu", "Aunglan", "Thayet"],
+        "Ayeyarwady": ["Pathein", "Hinthada", "Maubin", "Pyapon", "Myaungmya"],
+        "Taninthayi": ["Dawei", "Myeik", "Kawthaung", "Palaw", "Taninthayi"],
+    };
+
+    stateSelect.addEventListener('change', function() {
+        const cities = citiesByState[this.value] || [];
+        citySelect.innerHTML = '<option value="">-- Select City --</option>';
+        cities.forEach(city => {
+            const option = document.createElement('option');
+            option.value = city;
+            option.textContent = city;
+            citySelect.appendChild(option);
+        });
+    });
+</script>
+{% endblock %}

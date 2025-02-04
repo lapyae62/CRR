@@ -1,0 +1,72 @@
+{% extends "app/user_dashboard1_layout.html" %}
+
+{% block content %}
+<div class="container">
+    <h1>Manage Assigned Cases</h1>
+
+    <!-- Untaken Cases -->
+    <h2>Untaken Assigned Cases</h2>
+    <table id="untakenCasesTable" class="display" style="width:100%">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Region</th>
+                <th>Crime Type</th>
+                <th>Description</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for report in untaken_cases %}
+            <tr>
+                <td>{{ report.id }}</td>
+                <td>{{ report.regionname }}</td>
+                <td>{{ report.crimetype }}</td>
+                <td>{{ report.description }}</td>
+                <td>
+                    <form method="post" action="{% url 'take_case' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="report_id" value="{{ report.id }}">
+                        <button type="submit" class="btn btn-success">Take Case</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Taken Cases -->
+    <h2>Taken Assigned Cases</h2>
+    <table id="takenCasesTable" class="display" style="width:100%">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Region</th>
+                <th>Crime Type</th>
+                <th>Description</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for report in taken_cases %}
+            <tr>
+                <td>{{ report.id }}</td>
+                <td>{{ report.regionname }}</td>
+                <td>{{ report.crimetype }}</td>
+                <td>{{ report.description }}</td>
+                <td>
+                    <a href="{% url 'update_case' report.id %}" class="btn btn-primary">Update Case</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script>
+    $(document).ready(function() {
+        $('#untakenCasesTable').DataTable();
+        $('#takenCasesTable').DataTable();
+    });
+</script>
+{% endblock %}

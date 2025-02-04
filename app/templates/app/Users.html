@@ -1,0 +1,42 @@
+{% extends "app/admin_layout.html" %}
+
+<a href="{% url 'add_user' %}" class="btn btn-primary">Add New User</a>
+
+{% block content %}
+<div>
+    <h1>Users</h1>
+    <table id="usersTable" class="display">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Rank</th>
+                <th>Region</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.rank }}</td>
+                <td>{{ user.state }}</td>
+                <td>
+                    <a href="#" class="btn btn-sm btn-warning">Edit</a>
+                    <a href="#" class="btn btn-sm btn-danger">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<script>
+    $(document).ready(function () {
+        $('#usersTable').DataTable();
+    });
+</script>
+{% endblock %}
+

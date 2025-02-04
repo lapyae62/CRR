@@ -1,0 +1,70 @@
+{% extends "app/user_dashboard1_layout.html" %}
+
+{% block content %}
+<div class="container">
+    <h1>Reports in Your Region</h1>
+    <table id="reportsTable" class="display" style="width:100%">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Region</th>
+                <th>Crime Type</th>
+                <th>Description</th>
+                <th>Report Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for report in reports %}
+            <tr>
+                <td>{{ report.id }}</td>
+                <td>{{ report.regionname }}</td>
+                <td>{{ report.crimetype }}</td>
+                <td>{{ report.description }}</td>
+                <td>{{ report.reportdate }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script>
+    $(document).ready(function() {
+        $('#reportsTable').DataTable();
+    });
+</script>
+{% endblock %}
+{% extends "app/user_dashboard1_layout.html" %}
+
+{% block content %}
+<div class="container">
+    <h1>Reports in Your Region</h1>
+    <table id="reportsTable" class="display" style="width:100%">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Region</th>
+                <th>Crime Type</th>
+                <th>Description</th>
+                <th>Report Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for report in reports %}
+            <tr>
+                <td>{{ report.id }}</td>
+                <td>{{ report.regionname }}</td>
+                <td>{{ report.crimetype }}</td>
+                <td>{{ report.description }}</td>
+                <td>{{ report.reportdate }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script>
+    $(document).ready(function() {
+        $('#reportsTable').DataTable();
+    });
+</script>
+{% endblock %}

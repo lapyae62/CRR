@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }} - Admin Panel</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'app/content/bootstrap.min.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'app/content/site.css' %}" />
+    <script src="{% static 'app/scripts/modernizr-2.6.2.js' %}"></script>
+    <style>
+        body {
+            display: flex;
+        }
+
+        .sidebar {
+            width: 200px;
+            background-color: #f8f9fa;
+            padding: 10px;
+            height: 100vh;
+        }
+
+            .sidebar a {
+                display: block;
+                padding: 8px 16px;
+                text-decoration: none;
+                color: #000;
+            }
+
+                .sidebar a:hover {
+                    background-color: #ddd;
+                }
+
+        .main-content {
+            flex: 1;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h4>Admin Panel</h4>
+        <a href="{% url 'admin_reports' %}">Reports</a>
+        <a href="{% url 'admin_users' %}">Users</a>
+        <a href="{% url 'admin_user_requests' %}">User Requests</a>
+        <a href="{% url 'admin_feedbacks' %}">Feedbacks</a>
+    </div>
+    <div class="main-content">
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>

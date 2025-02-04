@@ -1,0 +1,202 @@
+{% extends "app/admin_layout.html" %}
+
+{% block content %}
+<div class="container">
+    <h1>Add New User</h1>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <label for="police_id">Police ID</label>
+            <input type="text" id="police_id" name="police_id" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label for="rank">Rank</label>
+            <select id="rank" name="rank" class="form-control" required>
+                <option value="Constable">Constable</option>
+                <option value="Sub-Inspector">Sub-Inspector</option>
+                <option value="Inspector">Inspector</option>
+                <option value="Superintendent">Superintendent</option>
+                <option value="Director General">Director General</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="state">State</label>
+            <select id="state" name="state" class="form-control" required>
+                <option value="KaChin">KaChin</option>
+                <option value="KaYah">KaYah</option>
+                <option value="KaYin">KaYin</option>
+                <option value="Chin">Chin</option>
+                <option value="Mon">Mon</option>
+                <option value="YaKhine">YaKhine</option>
+                <option value="Shan">Shan</option>
+                <option value="Yangon">Yangon</option>
+                <option value="Mandalay">Mandalay</option>
+                <option value="Bago">Bago</option>
+                <option value="Sagaing">Sagaing</option>
+                <option value="Magwe">Magwe</option>
+                <option value="Ayeyarwady">Ayeyarwady</option>
+                <option value="Taninthayi">Taninthayi</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="city">City</label>
+            <select id="city" name="city" class="form-control">
+                <option value="">-- Select a State First --</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="station">Station</label>
+            <select id="station" name="station" class="form-control">
+                <option value="">-- Select a City First --</option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Add User</button>
+    </form>
+</div>
+
+<script>// Define the mapping of states to cities and cities to stations
+    const stateCityMap = {
+        "KaChin": ["Myitkyina", "Bhamo", "Putao", "Shwegu", "Mogaung"],
+        "KaYah": ["Loikaw", "Demoso", "Shadaw", "Hpasawng", "Mese"],
+        "KaYin": ["Hpa-An", "Hlaingbwe", "Thandaung", "Kawkareik", "Myawaddy"],
+        "Chin": ["Hakha", "Falam", "Tonzang", "Matupi", "Paletwa"],
+        "Mon": ["Mawlamyine", "Thanbyuzayat", "Mudon", "Ye", "Chaungzon"],
+        "YaKhine": ["Sittwe", "Thandwe", "Mrauk-U", "Kyaukphyu", "Gwa"],
+        "Shan": ["Taunggyi", "Lashio", "Muse", "Kengtung", "Nyaungshwe"],
+        "Yangon": ["Yangon", "Thanlyin", "Insein", "Hlegu", "Hmawbi"],
+        "Mandalay": ["Mandalay", "Pyin Oo Lwin", "Kyaukse", "Meiktila", "Myingyan"],
+        "Bago": ["Bago", "Taungoo", "Pyay", "Shwegyin", "Nyaunglebin"],
+        "Sagaing": ["Sagaing", "Monywa", "Shwebo", "Kale", "Tamu"],
+        "Magwe": ["Magwe", "Pakokku", "Minbu", "Aunglan", "Thayet"],
+        "Ayeyarwady": ["Pathein", "Hinthada", "Maubin", "Pyapon", "Myaungmya"],
+        "Taninthayi": ["Dawei", "Myeik", "Kawthaung", "Palaw", "Taninthayi"],
+    };
+
+    const cityStationMap = {
+        "Myitkyina": ["Station 1", "Station 2", "Station 3"],
+        "Bhamo": ["Station 1", "Station 2", "Station 3"],
+        "Putao": ["Station 1", "Station 2", "Station 3"],
+        "Shwegu": ["Station 1", "Station 2", "Station 3"],
+        "Mogaung": ["Station 1", "Station 2", "Station 3"],
+        "Loikaw": ["Station 1", "Station 2", "Station 3"],
+        "Demoso": ["Station 1", "Station 2", "Station 3"],
+        "Shadaw": ["Station 1", "Station 2", "Station 3"],
+        "Hpasawng": ["Station 1", "Station 2", "Station 3"],
+        "Mese": ["Station 1", "Station 2", "Station 3"],
+        "Hpa-An": ["Station 1", "Station 2", "Station 3"],
+        "Hlaingbwe": ["Station 1", "Station 2", "Station 3"],
+        "Thandaung": ["Station 1", "Station 2", "Station 3"],
+        "Kawkareik": ["Station 1", "Station 2", "Station 3"],
+        "Myawaddy": ["Station 1", "Station 2", "Station 3"],
+        "Hakha": ["Station 1", "Station 2", "Station 3"],
+        "Falam": ["Station 1", "Station 2", "Station 3"],
+        "Tonzang": ["Station 1", "Station 2", "Station 3"],
+        "Matupi": ["Station 1", "Station 2", "Station 3"],
+        "Paletwa": ["Station 1", "Station 2", "Station 3"],
+        "Mawlamyine": ["Station 1", "Station 2", "Station 3"],
+        "Thanbyuzayat": ["Station 1", "Station 2", "Station 3"],
+        "Mudon": ["Station 1", "Station 2", "Station 3"],
+        "Ye": ["Station 1", "Station 2", "Station 3"],
+        "Chaungzon": ["Station 1", "Station 2", "Station 3"],
+        "Sittwe": ["Station 1", "Station 2", "Station 3"],
+        "Thandwe": ["Station 1", "Station 2", "Station 3"],
+        "Mrauk-U": ["Station 1", "Station 2", "Station 3"],
+        "Kyaukphyu": ["Station 1", "Station 2", "Station 3"],
+        "Gwa": ["Station 1", "Station 2", "Station 3"],
+        "Taunggyi": ["Station 1", "Station 2", "Station 3"],
+        "Lashio": ["Station 1", "Station 2", "Station 3"],
+        "Muse": ["Station 1", "Station 2", "Station 3"],
+        "Kengtung": ["Station 1", "Station 2", "Station 3"],
+        "Nyaungshwe": ["Station 1", "Station 2", "Station 3"],
+        "Yangon": ["Station 1", "Station 2", "Station 3"],
+        "Thanlyin": ["Station 1", "Station 2", "Station 3"],
+        "Insein": ["Station 1", "Station 2", "Station 3"],
+        "Hlegu": ["Station 1", "Station 2", "Station 3"],
+        "Hmawbi": ["Station 1", "Station 2", "Station 3"],
+        "Mandalay": ["Station 1", "Station 2", "Station 3"],
+        "Pyin Oo Lwin": ["Station 1", "Station 2", "Station 3"],
+        "Kyaukse": ["Station 1", "Station 2", "Station 3"],
+        "Meiktila": ["Station 1", "Station 2", "Station 3"],
+        "Myingyan": ["Station 1", "Station 2", "Station 3"],
+        "Bago": ["Station 1", "Station 2", "Station 3"],
+        "Taungoo": ["Station 1", "Station 2", "Station 3"],
+        "Pyay": ["Station 1", "Station 2", "Station 3"],
+        "Shwegyin": ["Station 1", "Station 2", "Station 3"],
+        "Nyaunglebin": ["Station 1", "Station 2", "Station 3"],
+        "Sagaing": ["Station 1", "Station 2", "Station 3"],
+        "Monywa": ["Station 1", "Station 2", "Station 3"],
+        "Shwebo": ["Station 1", "Station 2", "Station 3"],
+        "Kale": ["Station 1", "Station 2", "Station 3"],
+        "Tamu": ["Station 1", "Station 2", "Station 3"],
+        "Magwe": ["Station 1", "Station 2", "Station 3"],
+        "Pakokku": ["Station 1", "Station 2", "Station 3"],
+        "Minbu": ["Station 1", "Station 2", "Station 3"],
+        "Aunglan": ["Station 1", "Station 2", "Station 3"],
+        "Thayet": ["Station 1", "Station 2", "Station 3"],
+        "Pathein": ["Station 1", "Station 2", "Station 3"],
+        "Hinthada": ["Station 1", "Station 2", "Station 3"],
+        "Maubin": ["Station 1", "Station 2", "Station 3"],
+        "Pyapon": ["Station 1", "Station 2", "Station 3"],
+        "Myaungmya": ["Station 1", "Station 2", "Station 3"],
+        "Dawei": ["Station 1", "Station 2", "Station 3"],
+        "Myeik": ["Station 1", "Station 2", "Station 3"],
+        "Kawthaung": ["Station 1", "Station 2", "Station 3"],
+        "Palaw": ["Station 1", "Station 2", "Station 3"],
+        "Taninthayi": ["Station 1", "Station 2", "Station 3"],
+    };
+
+    const stateSelect = document.getElementById("state");
+    const citySelect = document.getElementById("city");
+    const stationSelect = document.getElementById("station");
+
+    // Update cities based on selected state
+    stateSelect.addEventListener("change", function () {
+        const selectedState = this.value;
+        citySelect.innerHTML = '<option value="">-- Select a City --</option>'; // Reset cities
+        stationSelect.innerHTML = '<option value="">-- Select a City First --</option>'; // Reset stations
+
+        if (selectedState && stateCityMap[selectedState]) {
+            stateCityMap[selectedState].forEach(city => {
+                const option = document.createElement("option");
+                option.value = city;
+                option.textContent = city;
+                citySelect.appendChild(option);
+            });
+        }
+    });
+
+    // Update stations based on selected city
+    citySelect.addEventListener("change", function () {
+        const selectedCity = this.value;
+        stationSelect.innerHTML = '<option value="">-- Select a Station --</option>'; // Reset stations
+
+        if (selectedCity && cityStationMap[selectedCity]) {
+            cityStationMap[selectedCity].forEach(station => {
+                const option = document.createElement("option");
+                option.value = station;
+                option.textContent = station;
+                stationSelect.appendChild(option);
+            });
+        }
+    });</script>
+{% endblock %}

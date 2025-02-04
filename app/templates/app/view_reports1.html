@@ -1,0 +1,49 @@
+{% extends "app/user_dashboard2.html" %}
+
+{% block content %}
+<div class="container">
+    <h1>Regional Reports</h1>
+
+    <!-- Table for Regional Reports -->
+    <table id="regionalReportsTable" class="display">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Region</th>
+                <th>Crime Type</th>
+                <th>Description</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Assign</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for report in reports %}
+            <tr>
+                <td>{{ report.id }}</td>
+                <td>{{ report.regionname }}</td>
+                <td>{{ report.crimetype }}</td>
+                <td>{{ report.description }}</td>
+                <td>{{ report.reportdate }}</td>
+                <td>{{ report.status }}</td>
+                <td>
+                    {% if report.assignedpoliceid == "none" %}
+                    <a href="{% url 'assign_report_form' report.id %}" class="btn btn-primary">Assign</a>
+                    {% else %}
+                    <button class="btn btn-secondary" disabled>Assigned</button>
+                    {% endif %}
+                </td>
+
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script>
+    // Initialize DataTable
+    $(document).ready(function() {
+        $('#regionalReportsTable').DataTable();
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends "app/user_dashboard2.html" %}
+
+{% block content %}
+<div class="container">
+    <h1>Assign Report #{{ report.id }}</h1>
+    <p><strong>Crime Type:</strong> {{ report.crimetype }}</p>
+    <p><strong>Description:</strong> {{ report.description }}</p>
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="assigned_user">Assign to:</label>
+            <select name="assigned_user" id="assigned_user" class="form-control" required>
+                {% for user in eligible_users %}
+                <option value="{{ user.id }}">
+                    {{ user.username }} - {{ user.rank }} ({{ user.case_count }} cases assigned)
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Assign</button>
+    </form>
+</div>
+{% endblock %}

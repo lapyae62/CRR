@@ -1,0 +1,72 @@
+{% extends "app/admin_layout.html" %}
+
+{% block content %}
+<div>
+    <h1>Reports</h1>
+    <table id="reportsTable" class="display">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Region Name</th>
+                <th>Crime Type</th>
+                <th>Description</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for report in reports %}
+            <tr>
+                <td>{{ report.id }}</td>
+                <td>{{ report.regionname }}</td>
+                <td>{{ report.crimetype }}</td>
+                <td>{{ report.description }}</td>
+                <td>{{ report.reportdate }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+<hr>
+
+<!-- Chart Section -->
+<h2>Crime Trends</h2>
+<canvas id="crimeChart" width="400" height="200"></canvas>
+</div>
+
+<script>
+    $(document).ready(function() {
+        // Initialize DataTable
+        $('#reportsTable').DataTable();
+
+        // Prepare data for the chart
+        const crimeLabels = {{ crime_types | safe }};
+        const crimeCounts = {{ crime_counts | safe }};
+
+        // Initialize Chart.js
+        const ctx = document.getElementById('crimeChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: crimeLabels,
+                datasets: [{
+                    label: 'Crime Reports',
+                    data: crimeCounts,
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}
+
+

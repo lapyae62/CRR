@@ -1,0 +1,57 @@
+{% extends "app/user_dashboard1_layout.html" %}
+
+{% block content %}
+<div class="container">
+    <h1>Update Assigned Case</h1>
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label for="report_id">Report ID</label>
+            <input type="text" id="report_id" name="report_id" class="form-control" value="{{ case.reportid }}" readonly>
+        </div>
+
+        <div class="form-group">
+            <label for="state">State</label>
+            <input type="text" id="state" name="state" class="form-control" value="{{ case.state }}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="city">City</label>
+            <input type="text" id="city" name="city" class="form-control" value="{{ case.city }}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="station">Station</label>
+            <input type="text" id="station" name="station" class="form-control" value="{{ case.station }}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="suspects">Suspects</label>
+            <input type="text" id="suspects" name="suspects" class="form-control" value="{{ case.suspects }}">
+        </div>
+
+        <div class="form-group">
+            <label for="culprit">Culprit</label>
+            <input type="text" id="culprit" name="culprit" class="form-control" value="{{ case.culprit }}">
+        </div>
+
+        <div class="form-group">
+            <label for="case_description">Case Description</label>
+            <textarea id="case_description" name="case_description" class="form-control" rows="4">{{ case.casedescription }}</textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="officer">Officer</label>
+            <input type="text" id="officer" name="officer" class="form-control" value="{{ case.officer }}" readonly>
+        </div>
+
+        <div class="form-group">
+            <label for="chief_officer">Chief Officer</label>
+            <input type="text" id="chief_officer" name="chief_officer" class="form-control" value="{{ case.chiefofficer }}" readonly>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+    </form>
+</div>
+{% endblock %}

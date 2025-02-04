@@ -1,0 +1,31 @@
+{% extends "app/layout.html" %}
+
+{% block content %}
+<div class="jumbotron">
+    <h1>Welcome to Our Crime Report and Record System</h1>
+    <p class="lead">
+        Streamline crime reporting and management with our efficient and user-friendly platform.
+    </p>
+    <p>
+        <a class="btn btn-primary btn-lg" href="{% url 'about' %}">Learn More About Us</a>
+    </p>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <h2>For Citizens</h2>
+        <p>Report crimes quickly and easily. Keep track of the status of your reports from anywhere, at any time.</p>
+        <p><a class="btn btn-default" href="{% url 'report_crime' %}">Report a Crime &raquo;</a></p>
+    </div>
+    <div class="col-md-4">
+        <h2>For Law Enforcement</h2>
+        <p>Manage reports effectively and collaborate with teams to ensure timely justice.</p>
+        <p><a class="btn btn-default" href="{% url 'custom_login'%}">Admin Panel &raquo;</a></p>
+    </div>
+    <div class="col-md-4">
+        <h2>Secure & Transparent</h2>
+        <p>We prioritize data security and ensure transparency in reporting and tracking crimes.</p>
+        <p><a class="btn btn-default" href="{% url 'about'%}">Learn Security Details &raquo;</a></p>
+    </div>
+</div>
+{% endblock %}
